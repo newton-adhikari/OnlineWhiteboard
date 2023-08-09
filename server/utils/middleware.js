@@ -11,16 +11,14 @@ const requestLogger = (request, response, next) => {
 }
 
 const authenticateToken = (request, response, next) => {
-    const token = request.header("Authorization");
+    const token = getTokenFrom(request);
 
-    console.log(!token);
     if (!token) {
         return response.status(401).json({ error: "Unauthorized" });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.SECRET);
-        console.log(decoded);
         const user = User.findById(decoded.id);
 
         if (!user) {
@@ -33,6 +31,14 @@ const authenticateToken = (request, response, next) => {
         return response.status(401).json({ error: "Unauthorized" });
     }
 };  
+
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.startsWith('Bearer ')) {
+      return authorization.replace('Bearer ', '')
+    }
+    return null
+  }
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });

@@ -1,9 +1,15 @@
 const http = require('http');
 const socketIo = require('socket.io');
+const cors = require("cors");
 
 const app = require("./app");
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:12221",
+    methods: ["GET", "POST"]
+  }
+});
 
 const PORT = process.env.PORT || 12222;
 

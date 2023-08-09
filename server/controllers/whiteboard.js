@@ -1,9 +1,9 @@
 const express = require('express');
 const whiteboardRouter = express.Router();
 
-whiteboardRouter.get('/whiteboard', (req, res) => {
+whiteboardRouter.get("/", (req, res) => {
 
-    res.status(200).json(boardContent);
-});
+    res.status(200).json({sucess: true});
+})
 
 module.exports = whiteboardRouter;
