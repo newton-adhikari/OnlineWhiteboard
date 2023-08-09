@@ -1,5 +1,6 @@
 const logger = require("./logger");
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 const requestLogger = (request, response, next) => {
   logger.info("Method:", request.method);
@@ -10,21 +11,28 @@ const requestLogger = (request, response, next) => {
 }
 
 const authenticateToken = (request, response, next) => {
-    const authHeader = request.headers["authorization"];
-    const token = authHeader && authHeader.split("")[1];
-  
-    if (token == null) {
-      return response.sendStatus(401);
+    const token = request.header("Authorization");
+
+    console.log(!token);
+    if (!token) {
+        return response.status(401).json({ error: "Unauthorized" });
     }
-  
-    jwt.verify(token, process.env.SECRET, (error, user) => {
-      if (error) {
-        return response.sendStatus(403);
-      }
-      request.user = user;
-      next();
-    });
-  };  
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET);
+        console.log(decoded);
+        const user = User.findById(decoded.id);
+
+        if (!user) {
+            return response.status(401).json({ error: "Unauthorized" });
+        }
+
+        request.user = user;
+        next();
+    } catch (error) {
+        return response.status(401).json({ error: "Unauthorized" });
+    }
+};  
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });

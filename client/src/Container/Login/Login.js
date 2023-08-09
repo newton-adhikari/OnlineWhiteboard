@@ -20,11 +20,12 @@ export default function SignIn() {
         username, password,
       })
 
-      console.log(response.data);
-      localStorage.setItem('token', response.data);
+      console.log(response.data.token);
+      localStorage.setItem('token', response.data.token);
       history.push('/whiteboard');
 
     } catch (exception) {
+        // show in a pop up
         console.log("Invalid credentials");
     }
 
