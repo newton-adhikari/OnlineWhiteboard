@@ -8,7 +8,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated = !!token; // Check if a token exists
   
     // backend token data maybe availabel after a while
-    console.log(isAuthenticated);
     return (
       <Route
         {...rest}

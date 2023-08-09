@@ -8,7 +8,6 @@ const getWhiteboard = async token => {
     }
   }
   const response = await axios.get(`${baseUrl}/api/whiteboard`, bearerToken);
-  console.log("Response from /whiteboard: ", response)
   return response;
 }
 

@@ -108,7 +108,6 @@ const Whiteboard = ({color}) => {
         }
     }
 
-    console.log(color);
     return <>
         <div id="whiteboard" className="whiteboard">
             <canvas className="wboard" id="wboard" />

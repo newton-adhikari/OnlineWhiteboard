@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import loginService from "../../services/loginService";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import './Login.css';
 
-export default function SignIn() {
+export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,13 +23,15 @@ export default function SignIn() {
         username, password,
       })
 
-      console.log(response.data.token);
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("name", response.data.name)
       history.push('/whiteboard');
 
     } catch (exception) {
         // show in a pop up
-        console.log("Invalid credentials");
+        toast.error('Invalid credentials', {
+          position: toast.POSITION.TOP_CENTER,
+        });    
     }
 
   };
